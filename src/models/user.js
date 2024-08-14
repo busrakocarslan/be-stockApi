@@ -100,6 +100,7 @@ const UserSchema = new mongoose.Schema({
 const passwordEncrypt = require('../helpers/passwordEncrypt')
 
 UserSchema.pre(['save', 'updateOne'], function (next) {
+    //sadece save yazınca update de validate yapamıyorsun tek istisnası controllerde const data =await... dediğimizde findByIdAndUpdate ile işlemi yapmak
 
     // console.log('pre-save çalıştı.')
     // console.log(this)
@@ -118,12 +119,12 @@ UserSchema.pre(['save', 'updateOne'], function (next) {
 
         if (isPasswordValidated) {
 
-            if (this?._update) {
+            if (this?._update) {// bu kısmı ekelemediğimizde güncellemede çalışmıyor o yuzden güncellme yi özellikle koşula koymak gerekiyor
                 // UPDATE:
                 this._update.password = passwordEncrypt(data.password)
             } else {
                 // CREATE:
-                this.password = passwordEncrypt(data.password)
+                this.password = passwordEncrypt(data.password)// datanın passwordunun şifrelenmiş haliyle değiştir. 
             }
 
             next()
@@ -134,7 +135,8 @@ UserSchema.pre(['save', 'updateOne'], function (next) {
         }
     } else {
         // throw new Error('Email is not validated.')
-        next(new Error('Email is not validated.'))
+        // burada req.status olmadığından hatada status gönderemeyiz 
+        next(new Error('Email is not validated.'))// nextin içinde errror handler e hatayı gönderiyoruz middleware olduğundan 
     }
 
 })
