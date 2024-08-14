@@ -21,8 +21,9 @@ const express= require("express")
 const app=express()
 
 //dotenv bağlama 
-require("dotenv").config();
-const PORT = process.env?.PORT || 8000;
+require('dotenv').config()
+const HOST = process.env?.HOST || '127.0.0.1'
+const PORT = process.env?.PORT || 8000
 
 //hata yakalama modulu require et - asyncErrors to errorHandler:
 require("express-async-errors");
@@ -37,7 +38,11 @@ dbConnection();
 // Accept JSON:
 app.use(express.json());
 
+// Run Logger:
+app.use(require('./src/middlewares/logger'))
 
+// res.getModelList():
+app.use(require('./src/middlewares/findSearchSortPage'))
 
 
 
@@ -58,6 +63,8 @@ app.all("/", (req, res) => {
 
 
 
+// Routes:
+app.use(require('./src/routes'))
 
 
 
