@@ -39,6 +39,7 @@ const document = {
 	},
 	security: [{ Token: [] }, { Bearer: [] }],
 	definitions: {
+		"User":require("./src/models/user").schema.obj,
 		// Models:
 		// "User": require('./src/models/user').schema.obj,
 	}
