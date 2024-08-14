@@ -10,10 +10,10 @@ module.exports = {
 
     list: async (req, res) => {
         /*
-            #swagger.ignore = true
+            #swagger.ignore = true--> token swagger dokumanda olmayacağından ona engel olmak için bu kodu yazıyoruz.
         */
 
-        const data = await res.getModelList(Token, {}, 'userId')
+        const data = await res.getModelList(Token, {}, 'userId')// getmodellist i düzenlerken csutom filter koyduğumdan populete 3. parametre bu sebeğle userId en sonda yazıyor
 
         res.status(200).send({
             error: false,

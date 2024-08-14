@@ -45,6 +45,7 @@ module.exports = {
                 }
             }
         */
+       //*swagger içinde $/ref atamasıyla  definations kısmına modelden direk alım yapmaasını sağlıyoruz.
 
         const data = await Brand.create(req.body)
 
