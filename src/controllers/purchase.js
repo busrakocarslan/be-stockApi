@@ -135,7 +135,7 @@ module.exports = {
     const data = await Purchase.deleteOne({ _id: req.params.id })
 
     //Satın alma iptal oldu. Product quantity'den adeti eksilt:
-    const updateProduct = await Product.updateOne({ _id: currentPurchase.productId }, { $inc: { quantity: -currentPurchase.quantity } })
+    const updateProduct = await Product.updateOne({ _id: currentPurchase.productId }, { $inc: { quantity: -currentPurchase.quantity } })//-*-=+ olduğundan ekleyecek
 
     res.status(data.deletedCount ? 204 : 404).send({
         error: !data.deletedCount,
