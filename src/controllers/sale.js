@@ -145,6 +145,9 @@ module.exports = {
             #swagger.summary = "Delete Sale"
         */
 
+    // Mevcut işlemdeki adet bilgisi al:
+    const currentSale = await Sale.findOne({ _id: req.params.id })
+
     const data = await Sale.deleteOne({ _id: req.params.id });
 
     // Product quantity'den adeti eksilt:
