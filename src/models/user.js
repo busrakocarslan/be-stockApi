@@ -94,7 +94,7 @@ const UserSchema = new mongoose.Schema({
     timestamps: true
 })
 
-/* ------------------------------------------------------- */
+/* ------------------------------------------------------- *
 // https://mongoosejs.com/docs/middleware.html
 
 const passwordEncrypt = require('../helpers/passwordEncrypt')
