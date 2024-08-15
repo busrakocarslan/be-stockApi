@@ -45,6 +45,8 @@ module.exports = {
                 }
             }
         */
+       //set userId from logined user:
+       req.body.userId=req.user._id//! satış yaparken ihtiyaç olan userıd yi kişinin kendi datasından al diyorum bu sayede başkası adına satışın önüne geçilmiş oluyor.
 
         const data = await Sale.create(req.body)
 
