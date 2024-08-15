@@ -26,7 +26,7 @@ const HOST = process.env?.HOST || '127.0.0.1'
 const PORT = process.env?.PORT || 8000
 
 //hata yakalama modulu require et - asyncErrors to errorHandler:
-require("express-async-errors");
+require('express-async-errors')
 
 // Connect to DB:
 const { dbConnection } = require("./src/configs/dbConnection");
@@ -37,6 +37,12 @@ dbConnection();
 
 // Accept JSON:
 app.use(express.json());
+
+// Call static uploadFile:
+app.use('/upload', express.static('./upload'))
+
+// Check Authentication:
+app.use(require('./src/middlewares/authentication'))
 
 // Run Logger:
 app.use(require('./src/middlewares/logger'))
