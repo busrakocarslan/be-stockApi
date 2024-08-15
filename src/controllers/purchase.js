@@ -1,15 +1,15 @@
-"use strict"
+"use strict";
 /* -------------------------------------------------------
     | FULLSTACK TEAM | NODEJS / EXPRESS |
 ------------------------------------------------------- */
 // Purchase Controllers:
 
-const Purchase = require('../models/purchase')
+const Purchase = require("../models/purchase");
+const Product = require("../models/product"); // quantitiy i değiştirmek gerek bunun için require edildi.
 
 module.exports = {
-
-    list: async (req, res) => {
-        /*
+  list: async (req, res) => {
+    /*
             #swagger.tags = ["Purchases"]
             #swagger.summary = "List Purchases"
             #swagger.description = `
@@ -23,18 +23,22 @@ module.exports = {
             `
         */
 
-            const data = await res.getModelList(Purchase, {}, ['userId', 'firmId', 'brandId', 'productId'])
+    const data = await res.getModelList(Purchase, {}, [
+      "userId",
+      "firmId",
+      "brandId",
+      "productId",
+    ]);
 
-        res.status(200).send({
-            error: false,
-            details: await res.getModelListDetails(Purchase),
-            data
-        })
+    res.status(200).send({
+      error: false,
+      details: await res.getModelListDetails(Purchase),
+      data,
+    });
+  },
 
-    },
-
-    create: async (req, res) => {
-        /*
+  create: async (req, res) => {
+    /*
             #swagger.tags = ["Purchases"]
             #swagger.summary = "Create Purchase"
             #swagger.parameters['body'] = {
@@ -46,34 +50,44 @@ module.exports = {
             }
         */
 
-        //set userId from logined user:
-        req.body.userId=req.user._id//! satış yaparken ihtiyaç olan userıd yi kişinin kendi datasından al diyorum bu sayede başkası adına satışın önüne geçilmiş oluyor.
+    //set userId from logined user:
+    req.body.userId = req.user._id; //! satış yaparken ihtiyaç olan userıd yi kişinin kendi datasından al diyorum bu sayede başkası adına satışın önüne geçilmiş oluyor.
 
-        const data = await Purchase.create(req.body)
+    const data = await Purchase.create(req.body);
 
-        res.status(201).send({
-            error: false,
-            data
-        })
-    },
+    //? Satınalma sonrası ürün adetini arttır:
+    const updateProduct = await Product.updateOne(
+      { _id: data.productId },
+      { $inc: { quantity: +data.quantity } }
+    ); //
 
-    read: async (req, res) => {
-        /*
+    res.status(201).send({
+      error: false,
+      data,
+    });
+  },
+
+  read: async (req, res) => {
+    /*
             #swagger.tags = ["Purchases"]
             #swagger.summary = "Get Single Purchase"
         */
 
-        const data = await Purchase.findOne({ _id: req.params.id }).populate(['userId','firmId', 'brandId', 'productId'])
+    const data = await Purchase.findOne({ _id: req.params.id }).populate([
+      "userId",
+      "firmId",
+      "brandId",
+      "productId",
+    ]);
 
-        res.status(200).send({
-            error: false,
-            data
-        })
+    res.status(200).send({
+      error: false,
+      data,
+    });
+  },
 
-    },
-
-    update: async (req, res) => {
-        /*
+  update: async (req, res) => {
+    /*
             #swagger.tags = ["Purchases"]
             #swagger.summary = "Update Purchase"
             #swagger.parameters['body'] = {
@@ -84,30 +98,48 @@ module.exports = {
                 }
             }
         */
-
-        const data = await Purchase.updateOne({ _id: req.params.id }, req.body, { runValidators: true })
-
-        res.status(202).send({
-            error: false,
-            data,
-            new: await Purchase.findOne({ _id: req.params.id })
-        })
-
-    },
-
-    delete: async (req, res) => {
-        /*
-            #swagger.tags = ["Purchases"]
-            #swagger.summary = "Delete Purchase"
-        */
-
-        const data = await Purchase.deleteOne({ _id: req.params.id })
+    // satın alma işlemi yapıldıktan sonra işlemde değişiklik yapılırsa toplam quantity nasıl değişecek onun koşulu hem quantity var mı hem de prodectıd aynı mı sorgusu yapıyoruz.
+    if (req.body?.quantity) {
+        // Mevcut işlemdeki adet bilgisi al:
+        const currentPurchase = await Purchase.findOne({ _id: req.params.id })
+        //? Farkı hesapla:
+        const difference = req.body.quantity - currentPurchase.quantity
+        //? Farkı Producta yansıt:
+        const updateProduct = await Product.updateOne({ _id: currentPurchase.productId }, { $inc: { quantity: +difference } })// +*- =- olduğundan + koymanın sıkıntısı yok
+        // productId değişmemeli:
+        req.body.productId = currentPurchase.productId
+    }
     
-        res.status(data.deletedCount ? 204 : 404).send({
-            error: !data.deletedCount,
-            data
-        })
 
-    },
+    const data = await Purchase.updateOne({ _id: req.params.id }, req.body, {
+      runValidators: true,
+    });
 
-}
+    res.status(202).send({
+      error: false,
+      data,
+      new: await Purchase.findOne({ _id: req.params.id }),
+    });
+  },
+
+  delete: async (req, res) => {
+    /*
+        #swagger.tags = ["Purchases"]
+        #swagger.summary = "Delete Purchase"
+    */
+
+    // Mevcut işlemdeki adet bilgisi al:
+    const currentPurchase = await Purchase.findOne({ _id: req.params.id })
+
+    // Delete:
+    const data = await Purchase.deleteOne({ _id: req.params.id })
+
+    //Satın alma iptal oldu. Product quantity'den adeti eksilt:
+    const updateProduct = await Product.updateOne({ _id: currentPurchase.productId }, { $inc: { quantity: -currentPurchase.quantity } })
+
+    res.status(data.deletedCount ? 204 : 404).send({
+        error: !data.deletedCount,
+        data
+    })
+},
+};
