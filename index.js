@@ -69,9 +69,18 @@ app.all("/api/v1", (req, res) => {
   });
 
 
+  // Routes:
+  app.use("/api/v1",require('./src/routes'))
 
-// Routes:
-app.use(require('./src/routes'))
+
+  app.get("/", (req, res) => {
+    //https://www.aa.com
+    /*
+    #swagger.ignore = true
+  */
+    res.sendFile(path.resolve(__dirname, "./public", "index.html"));
+  });
+
 
 
 
