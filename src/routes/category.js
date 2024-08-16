@@ -3,12 +3,16 @@
     | FULLSTACK TEAM | NODEJS / EXPRESS |
 ------------------------------------------------------- */
 const router = require('express').Router()
+
 /* ------------------------------------------------------- */
 // routes/category:
 
 const category = require('../controllers/category')
+const permissions = require('../middlewares/permissions')
 
 // URL: /categorys
+
+router.use(permissions.isAdmin)// hepsi admin olduğu için 
 
 router.route('/')
     .get(category.list)

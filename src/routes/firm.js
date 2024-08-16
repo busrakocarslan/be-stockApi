@@ -7,8 +7,11 @@ const router = require('express').Router()
 // routes/firm:
 
 const firm = require('../controllers/firm')
+const permissions = require('../middlewares/permissions')
 
 // URL: /firms
+
+router.use(permissions.isAdmin)// hepsi admin olduğu için 
 
 router.route('/')
     .get(firm.list)

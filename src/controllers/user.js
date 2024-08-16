@@ -7,8 +7,8 @@
 const User = require("../models/user");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
 //create de token vermek için  için gerekliolan eklemeler
-const Token = require('../models/token')
-const jwt = require('jsonwebtoken')
+const Token = require("../models/token");
+const jwt = require("jsonwebtoken");
 
 //?validate func
 /* ------------------------------------------------------- */
@@ -87,7 +87,8 @@ module.exports = {
     /* AUTO LOGIN */
     //*Normal projelerde siteye üye olduktan sonra yeniden login işlemi olmaz. Bunu sağmaka için user cerate login oluşturma ekliyorum
     // SimpleToken:
-    const tokenData = await Token.create({// kullanıcı daha yeni create olduğundan tokendata varmı diye sorgulamaya gerek yok.
+    const tokenData = await Token.create({
+      // kullanıcı daha yeni create olduğundan tokendata varmı diye sorgulamaya gerek yok.
       userId: data._id,
       token: passwordEncrypt(data._id + Date.now()),
     });
@@ -116,6 +117,9 @@ module.exports = {
             #swagger.summary = "Get Single User"
         */
 
+    // Admin olmayan başkasınıın kaydına erişemez:
+    req.params.id = req.user.isAdmin ? req.params.id : req.user._id;
+
     const data = await User.findOne({ _id: req.params.id });
 
     res.status(200).send({
@@ -140,6 +144,9 @@ module.exports = {
                 }
             }
         */
+
+    //* Admin olmayan başkasınıın kaydına erişemez:
+    req.params.id = req.user.isAdmin ? req.params.id : req.user._id;
 
     // const data = await User.findByIdAndUpdate(req.params.id, req.body, { runValidators: true })
     const data = await User.updateOne(
