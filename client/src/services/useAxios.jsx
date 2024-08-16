@@ -3,6 +3,7 @@ import { useSelector } from "react-redux"
 
 const useAxios = () => {
   const { token } = useSelector((state) => state.auth)
+   const baseUrl = '/api/v1';
 
   const axiosToken = axios.create({// güvenli işlem işin tokenli veriçekimi
     // baseURL: `${process.env.REACT_APP_BASE_URL}`,
