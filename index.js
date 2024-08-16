@@ -22,8 +22,9 @@ const app=express()
 
 //dotenv bağlama 
 require('dotenv').config()
-const HOST = process.env?.HOST || '127.0.0.1'
-const PORT = process.env?.PORT || 8000
+// const HOST = process.env?.HOST || '127.0.0.1'
+// const PORT = process.env?.PORT || 8000
+const PORT=10000
 
 //hata yakalama modulu require et - asyncErrors to errorHandler:
 require('express-async-errors')
@@ -54,14 +55,14 @@ app.use(require('./src/middlewares/findSearchSortPage'))
 
 /* ------------------------------------------------------- */
 
-app.all("/", (req, res) => {
+app.all("/api/v1", (req, res) => {
     res.send({
       error: false,
       message: "Welcome to STOCK API",
       docs: {
-        swagger: "/documents/swagger",
-        redoc: "/documents/redoc",
-        json: "/documents/json",
+        swagger: "/api/v1/documents/swagger",
+        redoc: "/api/v1/documents/redoc",
+        json: "/api/v1/documents/json",
       },
       user: req.user,
     });

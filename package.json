@@ -6,7 +6,10 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
-    "debug": "cross-env DEBUG=* nodemon"
+    "debug": "DEBUG=express nodemon",
+    "server": "nodemon server",
+    "dev": "node swaggerAutogen && nodemon index.js",
+    "setup-production": "npm i && cd client && npm i && npm run build && npm run rename1"
   },
   "keywords": [],
   "author": "KCRSLN",
