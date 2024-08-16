@@ -19,7 +19,7 @@
 ///expressi bağlama 
 const express= require("express")
 const app=express()
-const path = require("path");
+const path = require("node:path");
 
 //dotenv bağlama 
 require('dotenv').config()
