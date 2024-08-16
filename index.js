@@ -19,7 +19,7 @@
 ///expressi bağlama 
 const express= require("express")
 const app=express()
-const path = require("node:path");
+const path = require("path");
 
 //dotenv bağlama 
 require('dotenv').config()
@@ -77,7 +77,7 @@ app.all("/api/v1", (req, res) => {
   // Routes:
   app.use("/api/v1",require('./src/routes'))
 
-
+//frontend static
   app.get("/", (req, res) => {
     //https://www.aa.com
     /*
