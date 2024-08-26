@@ -12,7 +12,7 @@ const permissions = require('../middlewares/permissions')
 
 // URL: /categorys
 
-router.use(permissions.isAdmin)// hepsi admin olduğu için 
+router.use(permissions.isLogin)// hepsi admin olduğu için 
 
 router.route('/')
     .get(category.list)

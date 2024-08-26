@@ -17,9 +17,9 @@ router.route('/')
 
 router.route('/:id')
 .get(permissions.isLogin, sale.read)
-.put(permissions.isStaff, sale.update)
-.patch(permissions.isStaff, sale.update)
-.delete(permissions.isStaff, sale.delete)
+.put(permissions.isLogin, sale.update)
+.patch(permissions.isLogin, sale.update)
+.delete(permissions.isLogin, sale.delete)
 
 /* ------------------------------------------------------- */
 // Exports:

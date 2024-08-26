@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "./static/css/main.b33e73d2.css",
+    "main.js": "./static/js/main.e669799b.js",
+    "static/media/deneme-1.png": "./static/media/deneme-1.08a8995ccef08f0efca4.png",
+    "static/media/loading.gif": "./static/media/loading.42aaa181adb3af3bef08.gif",
+    "static/media/error-2129569_1280.jpg": "./static/media/error-2129569_1280.101177f10a925be16fd0.jpg",
+    "index.html": "./index.html",
+    "main.b33e73d2.css.map": "./static/css/main.b33e73d2.css.map",
+    "main.e669799b.js.map": "./static/js/main.e669799b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b33e73d2.css",
+    "static/js/main.e669799b.js"
+  ]
+}

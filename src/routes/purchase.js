@@ -19,9 +19,9 @@ router
 router
   .route("/:id")
   .get(permissions.isLogin, purchase.read)
-  .put(permissions.isStaff, purchase.update)
-  .patch(permissions.isStaff, purchase.update)
-  .delete(permissions.isStaff, purchase.delete);
+  .put(permissions.isLogin, purchase.update)
+  .patch(permissions.isLogin, purchase.update)
+  .delete(permissions.isLogin, purchase.delete);
 
 /* ------------------------------------------------------- */
 // Exports:

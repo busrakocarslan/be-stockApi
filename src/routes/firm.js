@@ -11,7 +11,7 @@ const permissions = require('../middlewares/permissions')
 
 // URL: /firms
 
-router.use(permissions.isAdmin)// hepsi admin olduğu için 
+router.use(permissions.isLogin)// hepsi admin olduğu için 
 
 router.route('/')
     .get(firm.list)
