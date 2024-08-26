@@ -45,7 +45,7 @@ app.use(express.static(path.resolve(__dirname, "./public")));
 
 
 // Call static uploadFile:
-app.use('/upload', express.static('./upload'))
+//app.use('/upload', express.static('./upload'))
 
 // Check Authentication:
 app.use(require('./src/middlewares/authentication'))
