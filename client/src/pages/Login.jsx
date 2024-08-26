@@ -8,23 +8,20 @@ import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
-import { Formik ,Form} from "formik";
+import { Formik, Form } from "formik";
 import { object, string } from "yup";
 // import { login } from "../services/useApiRequest";,
 import useApiRequest from "../services/useApiRequest";
 
 const Login = () => {
-  const {login}=useApiRequest()
+  const { login } = useApiRequest();
 
   const loginSchema = object({
-   
-    email: string()
-      .email("geçerli bir email giriniz")
-      .required("email zorunlu"), // dafault msj böyle ezebilirsin
+    email: string().email("geçerli bir email giriniz").required("ab@ab.com"), // dafault msj böyle ezebilirsin
     password: string()
-      .required()
+      .required("Ab123456*")     
       .min(8, "en az 8 karakter olmalıdır")
-      .matches(/\d+/, "şifre en az bir rakam içermelidir")// default mesaje kullanıcı tarafından anlaşılmak,yenisi oluşturuşmalı. 
+      .matches(/\d+/, "şifre en az bir rakam içermelidir") // default mesaje kullanıcı tarafından anlaşılmak,yenisi oluşturuşmalı.
       .matches(/[a-z]/, "şifre en az bir küçük harf içermelidir")
       .matches(/[A-Z]/, "şifre en az bir büyük harf içermelidir")
       .matches(
@@ -77,9 +74,9 @@ const Login = () => {
               // login(values);//dervices klasöründe çağırdığımız api fonksiyonu
               // actions.resetForm();// formikin içinde hazır fonk bu. formu resetliyor.
               // actions.setSubmitting(false); // isSubmitting adında bir değilken var acitions içinde submit işlemi devam ederken true oluyor
-              login(values)
-              actions.resetForm()
-              actions.setSubmitting(false)
+              login(values);
+              actions.resetForm();
+              actions.setSubmitting(false);
             }}
           >
             {({
@@ -92,7 +89,6 @@ const Login = () => {
             }) => (
               <Form>
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                
                   <TextField
                     label="Email"
                     name="email"
@@ -131,17 +127,24 @@ const Login = () => {
           </Formik>
 
           <Box sx={{ textAlign: "center", mt: 2 }}>
-            <Link to="/register"> <Typography  sx={{
-                    color:"primary.main",
-                    transition:"all .2s ease-in",
-                    "&:hover": { color: "secondary.main" },
-                  }}>Do you have not an account?</Typography></Link>
+            <Link to="/register">
+              {" "}
+              <Typography
+                sx={{
+                  color: "primary.main",
+                  transition: "all .2s ease-in",
+                  "&:hover": { color: "secondary.main" },
+                }}
+              >
+                Do you have not an account?
+              </Typography>
+            </Link>
           </Box>
         </Grid>
 
         <Grid item xs={10} sm={7} md={6} mt={3} justifyContent="center">
           <Container>
-            <img src={image} alt="img" width="400px"  />
+            <img src={image} alt="img" width="400px" />
           </Container>
         </Grid>
       </Grid>
